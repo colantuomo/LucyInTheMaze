@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathSelection : MonoBehaviour
 {
-    public Transform player;
+    private Transform player;
     public float moveSpeed = 4f;
     public float walkDelay = .5f;
     public float rotationSpeed = 7f;
@@ -24,6 +24,7 @@ public class PathSelection : MonoBehaviour
     {
         pathSelection = new List<Transform>();
         lastPathSelection = new List<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     void Update()
