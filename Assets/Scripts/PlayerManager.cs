@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
 
     void CheckForObstacle()
     {
-        positionToRay = new Vector3(transform.position.x, transform.position.y - .5f, transform.position.z);
+        positionToRay = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         if (Physics.Raycast(positionToRay, transform.forward, out RaycastHit hit, rayLenght))
         {
             if (hit.collider.tag == "Enemy")
@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(positionToRay, transform.forward * rayLenght);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawRay(positionToRay, transform.forward * rayLenght);
     }
 }
