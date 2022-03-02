@@ -13,9 +13,16 @@ public class PathSelection : MonoBehaviour
     public RectTransform fightPanel;
     public ParticleSystem groundFallFX;
     public Color selectedPathColor;
+
+    [Header("Sounds FX")]
+    public AudioClip clickPathFX;
+    public AudioClip completePathFX;
+    public AudioClip failPathFX;
+    private AudioSource audioSource;
     private List<Transform> pathSelection;
     private List<Transform> lastPathSelection;
     private bool canWalkTroughPath = false;
+    [Header("Scriptable Objects")]
 
     [SerializeField]
     private StateEventsOB stateEventsOB;
@@ -30,6 +37,7 @@ public class PathSelection : MonoBehaviour
         lastPathSelection = new List<Transform>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         defaulPlayerPosition = player.position;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -93,6 +101,7 @@ public class PathSelection : MonoBehaviour
                 {
                     pathSelection.Add(hit.transform);
                     hit.transform.GetComponent<Renderer>().material.color = Color.HSVToRGB(0, 0, 0.66f);
+                    audioSource.PlayOneShot(clickPathFX);
                 }
             }
         }
@@ -193,6 +202,7 @@ public class PathSelection : MonoBehaviour
                 canWalkTroughPath = false;
                 if (IsAFakeGround(pathSelection[0]))
                 {
+                    audioSource.PlayOneShot(failPathFX);
                     Destroy(pathSelection[0].gameObject);
                     player.gameObject.AddComponent<Rigidbody>();
                     player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
@@ -202,6 +212,7 @@ public class PathSelection : MonoBehaviour
                 }
                 if (IsEndPath(pathSelection[0]))
                 {
+                    audioSource.PlayOneShot(completePathFX);
                     GameManager.Instance.LoadNextPhase();
                 }
                 StartCoroutine(GoToNextPosition());
